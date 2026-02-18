@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ministries | CFAG Church</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="index.html">CFAG Church</a>
+            <span class="tagline">COMMUNITY OF FAITH ASSEMBLIES OF GOD</span>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="sermons.html">Sermons</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li class="active"><a href="ministries.html">Ministries</a></li>
+                <li><a href="connect.html">Connect</a></li>
+                <li><a href="give.html">Give</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="site-main">
+
+<section class="page-header">
+    <div class="container">
+        <h1>Ministries</h1>
+        <p>Discover ways to grow, connect, and serve at CFAG Church.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="card-grid three" id="ministries-list">
+            <!-- Ministries will be populated by JavaScript -->
+        </div>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="container two-column">
+        <div>
+            <h2>Serve on a Team</h2>
+            <p>
+                God has given each of us unique gifts to serve others. From hospitality and kids ministry
+                to worship, production, and outreach, there is a place for you.
+            </p>
+            <p>
+                If you're ready to get involved, fill out the Connect form and we'll help you find
+                the right next step.
+            </p>
+            <a href="connect.html" class="btn btn-primary">I Want to Serve</a>
+        </div>
+        <div>
+            <h2>Community Groups</h2>
+            <p>
+                Beyond Sundays, we gather in homes and on-campus for Bible study, prayer, and friendship.
+                Community groups are one of the best ways to grow in your faith and build relationships.
+            </p>
+        </div>
+    </div>
+</section>
+
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>&copy; <span id="current-year">2024</span> CFAG Church. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="connect.html">Contact</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>
+    // Embedded data
+    const ministries = [
+        {
+            "name": "Youth Ministry",
+            "description": "Helping teenagers grow in faith through weekly gatherings, camps, and discipleship.",
+            "leader": "PSTR. NEFEON BANDIEZ",
+            "contact": "youth@cfag.church",
+            "schedule": "Fridays at 7:00 PM",
+            "id": "698577e1ecea8"
+        },
+        {
+            "name": "Women's Ministry",
+            "description": "Bible studies, events, and mentoring for women of all ages.",
+            "leader": "PSTRA. ELEN GONZALES",
+            "contact": "women@cfag.church",
+            "schedule": "Second Saturday of each month at 9:00 AM",
+            "id": "698577e1ecebf"
+        },
+        {
+            "name": "Outreach & Missions",
+            "description": "Serving our city and supporting global missions partners.",
+            "leader": "PSTRA. ELEN GONZALES",
+            "contact": "missions@cfag.church",
+            "schedule": "Monthly outreaches and ongoing projects",
+            "id": "698577e1ecec1"
+        }
+    ];
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Render ministries
+    const ministriesList = document.getElementById('ministries-list');
+    ministries.forEach(ministry => {
+        const article = document.createElement('article');
+        article.className = 'card';
+        article.innerHTML = `
+            <h2>${escapeHtml(ministry.name)}</h2>
+            <p>${escapeHtml(ministry.description)}</p>
+            <p class="meta">
+                Leader: ${escapeHtml(ministry.leader)}<br>
+                Contact: <a href="mailto:${escapeHtml(ministry.contact)}">
+                    ${escapeHtml(ministry.contact)}
+                </a><br>
+                Schedule: ${escapeHtml(ministry.schedule)}
+            </p>
+        `;
+        ministriesList.appendChild(article);
+    });
+
+    // Update year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+

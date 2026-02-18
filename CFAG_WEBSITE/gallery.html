@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gallery | CFAG Church</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="index.html">CFAG Church</a>
+            <span class="tagline">COMMUNITY OF FAITH ASSEMBLIES OF GOD</span>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="sermons.html">Sermons</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="ministries.html">Ministries</a></li>
+                <li><a href="connect.html">Connect</a></li>
+                <li><a href="give.html">Give</a></li>
+                <li class="active"><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="site-main">
+
+<section class="page-header">
+    <div class="container">
+        <h1>Gallery</h1>
+        <p>Snapshots of what God is doing in and through our church family.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="gallery-grid" id="gallery">
+            <!-- Gallery images will be loaded from localStorage -->
+        </div>
+    </div>
+</section>
+
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>&copy; <span id="current-year">2024</span> CFAG Church. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="connect.html">Contact</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>
+    // Update year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+
+    // Load gallery images from localStorage
+    function loadGalleryImages() {
+        const gallery = document.getElementById('gallery');
+        const stored = localStorage.getItem('admin_gallery');
+        
+        let images = [];
+        if (stored) {
+            images = JSON.parse(stored);
+        } else {
+            // Default images if none uploaded
+            images = [
+                {image_data: 'assets/images/gallery1.jpg', thumbnail: 'assets/images/gallery1_thumb.jpg', alt_text: 'Worship service'},
+                {image_data: 'assets/images/gallery2.jpg', thumbnail: 'assets/images/gallery2_thumb.jpg', alt_text: 'Kids ministry'},
+                {image_data: 'assets/images/gallery3.jpg', thumbnail: 'assets/images/gallery3_thumb.jpg', alt_text: 'Youth gathering'},
+                {image_data: 'assets/images/gallery4.jpg', thumbnail: 'assets/images/gallery4_thumb.jpg', alt_text: 'Community outreach'},
+                {image_data: 'assets/images/gallery5.jpg', thumbnail: 'assets/images/gallery5_thumb.jpg', alt_text: 'Prayer night'},
+                {image_data: 'assets/images/gallery6.jpg', thumbnail: 'assets/images/gallery6_thumb.jpg', alt_text: 'Church picnic'}
+            ];
+        }
+
+        gallery.innerHTML = '';
+        images.forEach(image => {
+            const link = document.createElement('a');
+            link.href = image.image_data || image.thumbnail;
+            link.className = 'gallery-item';
+            link.setAttribute('data-lightbox', 'gallery');
+            
+            const img = document.createElement('img');
+            img.src = image.thumbnail || image.image_data;
+            img.alt = image.alt_text || 'Gallery image';
+            
+            link.appendChild(img);
+            gallery.appendChild(link);
+        });
+    }
+
+    // Load images on page load
+    loadGalleryImages();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Events | CFAG Church</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="index.html">CFAG Church</a>
+            <span class="tagline">COMMUNITY OF FAITH ASSEMBLIES OF GOD</span>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="sermons.html">Sermons</a></li>
+                <li class="active"><a href="events.html">Events</a></li>
+                <li><a href="ministries.html">Ministries</a></li>
+                <li><a href="connect.html">Connect</a></li>
+                <li><a href="give.html">Give</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="site-main">
+
+<section class="page-header">
+    <div class="container">
+        <h1>Events</h1>
+        <p>Stay up to date with what's happening at CFAG Church.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container two-column">
+        <div>
+            <h2>Upcoming Events</h2>
+            <ul class="card-list" id="events-list">
+                <!-- Events will be populated by JavaScript -->
+            </ul>
+        </div>
+        <div>
+            <h2>Event Calendar</h2>
+            <p class="small">
+                This simple calendar highlights today's date. You can enhance it later by attaching
+                events to specific days using JavaScript or a database.
+            </p>
+            <div id="events-calendar" class="calendar"></div>
+        </div>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="container">
+        <h2>RSVP for an Event</h2>
+
+        <div id="rsvp-message" class="alert hidden" style="display: none;"></div>
+
+        <form class="form" id="rsvp-form">
+            <div class="form-row">
+                <label for="rsvp-name">Name</label>
+                <input type="text" id="rsvp-name" name="name" required>
+            </div>
+            <div class="form-row">
+                <label for="rsvp-email">Email</label>
+                <input type="email" id="rsvp-email" name="email" required>
+            </div>
+            <div class="form-row">
+                <label for="rsvp-event">Event</label>
+                <select id="rsvp-event" name="event_title" required>
+                    <option value="">Select an event</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <button type="submit" class="btn btn-primary">Submit RSVP</button>
+            </div>
+        </form>
+    </div>
+</section>
+
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>&copy; <span id="current-year">2024</span> CFAG Church. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="connect.html">Contact</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>
+    // Embedded data
+    const events = [
+        {
+            "title": "Sunday Worship Service",
+            "date": "2026-02-08",
+            "time": "10:00 AM",
+            "location": "Main Sanctuary",
+            "description": "Join us for worship, teaching, and fellowship.",
+            "id": "698577e1ea94d"
+        },
+        {
+            "title": "Midweek Prayer Meeting",
+            "date": "2026-02-05",
+            "time": "7:00 PM",
+            "location": "Prayer Room",
+            "description": "A weekly time of corporate prayer and encouragement.",
+            "id": "698577e1eacda"
+        },
+        {
+            "title": "Youth Night",
+            "date": "2026-02-15",
+            "time": "6:30 PM",
+            "location": "Youth Hall",
+            "description": "Games, worship, and a timely message for students.",
+            "id": "698577e1eaceb"
+        }
+    ];
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Render events
+    const eventsList = document.getElementById('events-list');
+    if (events.length > 0) {
+        events.forEach(event => {
+            const li = document.createElement('li');
+            li.className = 'card';
+            li.innerHTML = `
+                <h3>${escapeHtml(event.title)}</h3>
+                <p class="meta">
+                    ${escapeHtml(event.date)}
+                    &middot;
+                    ${escapeHtml(event.time)}
+                </p>
+                <p class="meta">
+                    ${escapeHtml(event.location)}
+                </p>
+                <p>${escapeHtml(event.description)}</p>
+            `;
+            eventsList.appendChild(li);
+        });
+    } else {
+        eventsList.innerHTML = '<li><p>No events are scheduled at this time. Please check back soon.</p></li>';
+    }
+
+    // Populate RSVP form dropdown
+    const rsvpEventSelect = document.getElementById('rsvp-event');
+    events.forEach(event => {
+        const option = document.createElement('option');
+        option.value = event.title;
+        option.textContent = event.title;
+        rsvpEventSelect.appendChild(option);
+    });
+
+    // Handle RSVP form submission
+    const rsvpForm = document.getElementById('rsvp-form');
+    const rsvpMessage = document.getElementById('rsvp-message');
+    
+    rsvpForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const name = document.getElementById('rsvp-name').value.trim();
+        const email = document.getElementById('rsvp-email').value.trim();
+        const eventTitle = document.getElementById('rsvp-event').value.trim();
+        
+        const errors = [];
+        if (!name) errors.push('Please enter your name.');
+        if (!email || !email.includes('@')) errors.push('Please enter a valid email address.');
+        if (!eventTitle) errors.push('Please select an event.');
+        
+        if (errors.length > 0) {
+            rsvpMessage.className = 'alert error';
+            rsvpMessage.innerHTML = '<ul>' + errors.map(err => '<li>' + escapeHtml(err) + '</li>').join('') + '</ul>';
+            rsvpMessage.style.display = 'block';
+        } else {
+            rsvpMessage.className = 'alert success';
+            rsvpMessage.textContent = 'Thank you for your RSVP! We look forward to seeing you.';
+            rsvpMessage.style.display = 'block';
+            rsvpForm.reset();
+        }
+        
+        rsvpMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    // Update year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,26 @@
+[
+    {
+        "title": "Sunday Worship Service",
+        "date": "2026-02-08",
+        "time": "10:00 AM",
+        "location": "Main Sanctuary",
+        "description": "Join us for worship, teaching, and fellowship.",
+        "id": "698577e1ea94d"
+    },
+    {
+        "title": "Midweek Prayer Meeting",
+        "date": "2026-02-05",
+        "time": "7:00 PM",
+        "location": "Prayer Room",
+        "description": "A weekly time of corporate prayer and encouragement.",
+        "id": "698577e1eacda"
+    },
+    {
+        "title": "Youth Night",
+        "date": "2026-02-15",
+        "time": "6:30 PM",
+        "location": "Youth Hall",
+        "description": "Games, worship, and a timely message for students.",
+        "id": "698577e1eaceb"
+    }
+]

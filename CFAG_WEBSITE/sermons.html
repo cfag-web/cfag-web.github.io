@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sermons | CFAG Church</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="index.html">CFAG Church</a>
+            <span class="tagline">COMMUNITY OF FAITH ASSEMBLIES OF GOD</span>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li class="active"><a href="sermons.html">Sermons</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="ministries.html">Ministries</a></li>
+                <li><a href="connect.html">Connect</a></li>
+                <li><a href="give.html">Give</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="site-main">
+
+<section class="page-header">
+    <div class="container">
+        <h1>Sermons</h1>
+        <p>Watch or listen to recent messages from CFAG Church.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <form class="filters" id="sermon-filters">
+            <div class="filter-group">
+                <label for="filter-series">Series</label>
+                <select id="filter-series">
+                    <option value="">All series</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="filter-speaker">Speaker</label>
+                <select id="filter-speaker">
+                    <option value="">All speakers</option>
+                </select>
+            </div>
+        </form>
+
+        <div class="card-grid two" id="sermon-list">
+            <!-- Sermons will be populated by JavaScript -->
+        </div>
+    </div>
+</section>
+
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>&copy; <span id="current-year">2024</span> CFAG Church. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="connect.html">Contact</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>
+    // Embedded data
+    const sermons = [
+        {
+            "title": "Walking by Faith",
+            "speaker": "Pastor Kiko Gonzales",
+            "date": "2026-01-25",
+            "series": "Faith Foundations",
+            "summary": "Learning to trust God in every season of life.",
+            "video_url": "",
+            "media_file": "uploads/sermons/698577e1ec470_1st_Sunday_formal_Service.pptx",
+            "id": "698577e1ec470"
+        },
+        {
+            "title": "Hope for Tomorrow",
+            "speaker": "Pastora Flocer Cordero",
+            "date": "2026-01-18",
+            "series": "Living Hope",
+            "summary": "Finding hope in Christ in uncertain times.",
+            "video_url": "https://player.vimeo.com/video/987654321",
+            "id": "698577e1ec479"
+        },
+        {
+            "title": "The Power of Prayer",
+            "speaker": "Pastor Nefeon Bandiez",
+            "date": "2025-12-21",
+            "series": "Prayer",
+            "summary": "Discovering the power of persistent prayer.",
+            "video_url": "https://player.vimeo.com/video/555555555",
+            "id": "698577e1ec47a"
+        }
+    ];
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function getFileExtension(filePath) {
+        return filePath.split('.').pop().toLowerCase();
+    }
+
+    function renderSermonMedia(sermon) {
+        if (sermon.media_file) {
+            const fileExtension = getFileExtension(sermon.media_file);
+            const isVideo = ['mp4', 'webm', 'ogg', 'mov', 'avi'].includes(fileExtension);
+            const isAudio = ['mp3', 'wav', 'ogg', 'm4a'].includes(fileExtension);
+            const isPowerPoint = ['ppt', 'pptx'].includes(fileExtension);
+
+            if (isVideo) {
+                return `<video controls autoplay style="width: 100%; max-width: 100%; height: auto;">
+                    <source src="${escapeHtml(sermon.media_file)}" type="video/${fileExtension === 'mov' ? 'quicktime' : fileExtension}">
+                    Your browser does not support the video tag.
+                </video>`;
+            } else if (isAudio) {
+                return `<audio controls autoplay style="width: 100%;">
+                    <source src="${escapeHtml(sermon.media_file)}" type="audio/${fileExtension === 'm4a' ? 'mpeg' : fileExtension}">
+                    Your browser does not support the audio tag.
+                </audio>`;
+            } else if (isPowerPoint) {
+                const fileName = sermon.media_file.split('/').pop();
+                const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.hostname.includes('localhost');
+                
+                if (isLocalhost) {
+                    return `<div class="powerpoint-viewer">
+                        <div class="powerpoint-preview" style="padding: 3rem 2rem; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white;">
+                            <div style="font-size: 4rem; margin-bottom: 1rem;">📊</div>
+                            <h3 style="margin: 0 0 0.5rem; font-size: 1.5rem;">PowerPoint Presentation</h3>
+                            <p style="margin: 0 0 2rem; opacity: 0.9; font-size: 0.95rem;">${escapeHtml(fileName)}</p>
+                            <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                                <a href="${escapeHtml(sermon.media_file)}" class="btn btn-outline" download style="background: rgba(255,255,255,0.2); border-color: white; color: white; padding: 0.75rem 1.5rem;">
+                                    Download to View
+                                </a>
+                                <a href="${escapeHtml(sermon.media_file)}" target="_blank" class="btn btn-outline" style="background: rgba(255,255,255,0.2); border-color: white; color: white; padding: 0.75rem 1.5rem;">
+                                    Open in New Tab
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 10px; display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;">
+                            <a href="${escapeHtml(sermon.media_file)}" class="btn btn-outline btn-small" download>Download PowerPoint</a>
+                            <span style="font-size: 0.85rem; color: #999;">Click to download and view in PowerPoint</span>
+                        </div>
+                    </div>`;
+                } else {
+                    const baseUrl = window.location.protocol + '//' + window.location.host;
+                    const fullFilePath = baseUrl + '/' + sermon.media_file;
+                    const officeViewerUrl = 'https://view.officeapps.live.com/op/embed.aspx?src=' + encodeURIComponent(fullFilePath);
+                    return `<div class="powerpoint-viewer">
+                        <iframe src="${escapeHtml(officeViewerUrl)}" 
+                                frameborder="0" 
+                                allowfullscreen
+                                style="width: 100%; height: 600px; border-radius: 12px;"
+                                title="PowerPoint Presentation"
+                                id="ppt-iframe-${escapeHtml(sermon.id || '')}">
+                        </iframe>
+                        <div id="ppt-fallback-${escapeHtml(sermon.id || '')}" style="display: none; padding: 3rem 2rem; text-align: center; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; color: white; margin-top: 1rem;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">📊</div>
+                            <h3 style="margin: 0 0 0.5rem;">Viewer Unavailable</h3>
+                            <p style="margin: 0 0 2rem; opacity: 0.9;">Please download the file to view it.</p>
+                            <a href="${escapeHtml(sermon.media_file)}" class="btn btn-outline" download style="background: rgba(255,255,255,0.2); border-color: white; color: white; padding: 0.75rem 1.5rem;">
+                                Download PowerPoint
+                            </a>
+                        </div>
+                    </div>`;
+                }
+            } else {
+                return `<a href="${escapeHtml(sermon.media_file)}" class="btn btn-outline" download>Download Media File</a>`;
+            }
+        } else if (sermon.video_url) {
+            return `<iframe src="${escapeHtml(sermon.video_url)}"
+                    frameborder="0" allow="autoplay; fullscreen" allowfullscreen
+                    title="Sermon video"></iframe>`;
+        } else {
+            return '<p style="color: #999; font-style: italic;">No media available for this sermon.</p>';
+        }
+    }
+
+    // Build series and speaker lists
+    const seriesList = [...new Set(sermons.map(s => s.series))].sort();
+    const speakerList = [...new Set(sermons.map(s => s.speaker))].sort();
+
+    // Populate filter dropdowns
+    const seriesSelect = document.getElementById('filter-series');
+    const speakerSelect = document.getElementById('filter-speaker');
+
+    seriesList.forEach(series => {
+        const option = document.createElement('option');
+        option.value = series;
+        option.textContent = series;
+        seriesSelect.appendChild(option);
+    });
+
+    speakerList.forEach(speaker => {
+        const option = document.createElement('option');
+        option.value = speaker;
+        option.textContent = speaker;
+        speakerSelect.appendChild(option);
+    });
+
+    // Render sermons
+    const sermonList = document.getElementById('sermon-list');
+    sermons.forEach(sermon => {
+        const article = document.createElement('article');
+        article.className = 'card sermon';
+        article.setAttribute('data-series', sermon.series);
+        article.setAttribute('data-speaker', sermon.speaker);
+        article.innerHTML = `
+            <h2>${escapeHtml(sermon.title)}</h2>
+            <p class="meta">
+                ${escapeHtml(sermon.date)}
+                &middot;
+                ${escapeHtml(sermon.speaker)}
+            </p>
+            <p class="meta meta-series">${escapeHtml(sermon.series)}</p>
+            <p>${escapeHtml(sermon.summary)}</p>
+            <div class="sermon-media">
+                ${renderSermonMedia(sermon)}
+            </div>
+            <div class="sermon-actions">
+                <a href="#" class="btn btn-outline btn-small disabled">Download audio (coming soon)</a>
+                <a href="#" class="link-arrow disabled">Download transcript (optional)</a>
+            </div>
+        `;
+        sermonList.appendChild(article);
+    });
+
+    // Update year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+
