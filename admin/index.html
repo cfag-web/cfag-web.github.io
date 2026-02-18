@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard | Admin</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+<header class="admin-header">
+    <div class="container">
+        <div class="admin-header-inner">
+            <div class="admin-logo">
+                <a href="index.html">CFAG Admin</a>
+            </div>
+            <nav class="admin-nav">
+                <a href="index.html" class="active">Dashboard</a>
+                <a href="events.html">Events</a>
+                <a href="sermons.html">Sermons</a>
+                <a href="ministries.html">Ministries</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="../index.html" target="_blank">View Site</a>
+                <a href="logout.html">Logout</a>
+            </nav>
+        </div>
+    </div>
+</header>
+<main class="admin-main">
+    <div class="container">
+
+<h1>Admin Dashboard</h1>
+<p class="admin-subtitle">Welcome, <span id="admin-username">Admin</span>!</p>
+
+<div class="admin-stats">
+    <div class="admin-stat-card">
+        <h3 id="events-count">0</h3>
+        <p>Events</p>
+        <a href="events.html" class="btn btn-outline btn-small">Manage</a>
+    </div>
+    <div class="admin-stat-card">
+        <h3 id="sermons-count">0</h3>
+        <p>Sermons</p>
+        <a href="sermons.html" class="btn btn-outline btn-small">Manage</a>
+    </div>
+    <div class="admin-stat-card">
+        <h3 id="ministries-count">0</h3>
+        <p>Ministries</p>
+        <a href="ministries.html" class="btn btn-outline btn-small">Manage</a>
+    </div>
+    <div class="admin-stat-card">
+        <h3 id="gallery-count">0</h3>
+        <p>Gallery Images</p>
+        <a href="gallery.html" class="btn btn-outline btn-small">Manage</a>
+    </div>
+</div>
+
+<section class="admin-section">
+    <h2>Quick Actions</h2>
+    <div class="admin-actions">
+        <a href="events.html?action=add" class="admin-action-card">
+            <h3>➕ Add New Event</h3>
+            <p>Create a new church event</p>
+        </a>
+        <a href="sermons.html?action=add" class="admin-action-card">
+            <h3>🎤 Add New Sermon</h3>
+            <p>Upload a new sermon</p>
+        </a>
+        <a href="ministries.html?action=add" class="admin-action-card">
+            <h3>🤝 Add New Ministry</h3>
+            <p>Create a new ministry page</p>
+        </a>
+        <a href="gallery.html?action=add" class="admin-action-card">
+            <h3>📷 Add New Image</h3>
+            <p>Upload an image to the gallery</p>
+        </a>
+    </div>
+</section>
+
+<section class="admin-section" id="upcoming-events-section" style="display: none;">
+    <h2>Upcoming Events</h2>
+    <ul class="admin-list" id="upcoming-events-list">
+    </ul>
+</section>
+
+    </div>
+</main>
+<script src="../assets/js/main.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    // Check authentication
+    if (localStorage.getItem('admin_logged_in') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    // Load data from localStorage
+    function loadData(type) {
+        const stored = localStorage.getItem('admin_' + type);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+        // Return default data if nothing stored
+        const defaults = {
+            events: [
+                {"title": "Sunday Worship Service", "date": "2026-02-08", "time": "10:00 AM", "location": "Main Sanctuary", "description": "Join us for worship, teaching, and fellowship.", "id": "698577e1ea94d"},
+                {"title": "Midweek Prayer Meeting", "date": "2026-02-05", "time": "7:00 PM", "location": "Prayer Room", "description": "A weekly time of corporate prayer and encouragement.", "id": "698577e1eacda"},
+                {"title": "Youth Night", "date": "2026-02-15", "time": "6:30 PM", "location": "Youth Hall", "description": "Games, worship, and a timely message for students.", "id": "698577e1eaceb"}
+            ],
+            sermons: [
+                {"title": "Walking by Faith", "speaker": "Pastor Kiko Gonzales", "date": "2026-01-25", "series": "Faith Foundations", "summary": "Learning to trust God in every season of life.", "video_url": "", "media_file": "uploads/sermons/698577e1ec470_1st_Sunday_formal_Service.pptx", "id": "698577e1ec470"},
+                {"title": "Hope for Tomorrow", "speaker": "Pastora Flocer Cordero", "date": "2026-01-18", "series": "Living Hope", "summary": "Finding hope in Christ in uncertain times.", "video_url": "https://player.vimeo.com/video/987654321", "id": "698577e1ec479"},
+                {"title": "The Power of Prayer", "speaker": "Pastor Nefeon Bandiez", "date": "2025-12-21", "series": "Prayer", "summary": "Discovering the power of persistent prayer.", "video_url": "https://player.vimeo.com/video/555555555", "id": "698577e1ec47a"}
+            ],
+            ministries: [
+                {"name": "Youth Ministry", "description": "Helping teenagers grow in faith through weekly gatherings, camps, and discipleship.", "leader": "PSTR. NEFEON BANDIEZ", "contact": "youth@cfag.church", "schedule": "Fridays at 7:00 PM", "id": "698577e1ecea8"},
+                {"name": "Women's Ministry", "description": "Bible studies, events, and mentoring for women of all ages.", "leader": "PSTRA. ELEN GONZALES", "contact": "women@cfag.church", "schedule": "Second Saturday of each month at 9:00 AM", "id": "698577e1ecebf"},
+                {"name": "Outreach & Missions", "description": "Serving our city and supporting global missions partners.", "leader": "PSTRA. ELEN GONZALES", "contact": "missions@cfag.church", "schedule": "Monthly outreaches and ongoing projects", "id": "698577e1ecec1"}
+            ]
+        };
+        return defaults[type] || [];
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Set admin username
+    const adminUsername = localStorage.getItem('admin_username') || 'Admin';
+    document.getElementById('admin-username').textContent = adminUsername;
+
+    // Load and display stats
+    const events = loadData('events');
+    const sermons = loadData('sermons');
+    const ministries = loadData('ministries');
+    const gallery = loadData('gallery');
+
+    document.getElementById('events-count').textContent = events.length;
+    document.getElementById('sermons-count').textContent = sermons.length;
+    document.getElementById('ministries-count').textContent = ministries.length;
+    
+    // Add gallery count if stat card exists
+    const galleryStat = document.getElementById('gallery-count');
+    if (galleryStat) {
+        galleryStat.textContent = gallery.length;
+    }
+
+    // Display upcoming events
+    const now = new Date().getTime();
+    const upcomingEvents = events.filter(event => {
+        const eventDate = new Date(event.date).getTime();
+        return eventDate >= now;
+    }).slice(0, 5);
+
+    if (upcomingEvents.length > 0) {
+        document.getElementById('upcoming-events-section').style.display = 'block';
+        const list = document.getElementById('upcoming-events-list');
+        upcomingEvents.forEach(event => {
+            const li = document.createElement('li');
+            li.innerHTML = `
+                <strong>${escapeHtml(event.title)}</strong>
+                <span class="meta">${escapeHtml(event.date)} at ${escapeHtml(event.time)}</span>
+                <a href="events.html?action=edit&id=${escapeHtml(event.id)}" class="btn btn-outline btn-small">Edit</a>
+            `;
+            list.appendChild(li);
+        });
+    }
+</script>
+</body>
+</html>
+

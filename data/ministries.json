@@ -1,0 +1,26 @@
+[
+    {
+        "name": "Youth Ministry",
+        "description": "Helping teenagers grow in faith through weekly gatherings, camps, and discipleship.",
+        "leader": "PSTR. NEFEON BANDIEZ",
+        "contact": "youth@cfag.church",
+        "schedule": "Fridays at 7:00 PM",
+        "id": "698577e1ecea8"
+    },
+    {
+        "name": "Women's Ministry",
+        "description": "Bible studies, events, and mentoring for women of all ages.",
+        "leader": "PSTRA. ELEN GONZALES",
+        "contact": "women@cfag.church",
+        "schedule": "Second Saturday of each month at 9:00 AM",
+        "id": "698577e1ecebf"
+    },
+    {
+        "name": "Outreach & Missions",
+        "description": "Serving our city and supporting global missions partners.",
+        "leader": "PSTRA. ELEN GONZALES",
+        "contact": "missions@cfag.church",
+        "schedule": "Monthly outreaches and ongoing projects",
+        "id": "698577e1ecec1"
+    }
+]

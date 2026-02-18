@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Ministries | Admin</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+<header class="admin-header">
+    <div class="container">
+        <div class="admin-header-inner">
+            <div class="admin-logo">
+                <a href="index.html">CFAG Admin</a>
+            </div>
+            <nav class="admin-nav">
+                <a href="index.html">Dashboard</a>
+                <a href="events.html">Events</a>
+                <a href="sermons.html">Sermons</a>
+                <a href="ministries.html" class="active">Ministries</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="../index.html" target="_blank">View Site</a>
+                <a href="logout.html">Logout</a>
+            </nav>
+        </div>
+    </div>
+</header>
+<main class="admin-main">
+    <div class="container">
+
+<h1>Manage Ministries</h1>
+
+<div id="admin-message" class="alert hidden" style="display: none;"></div>
+
+<section class="admin-form-section" id="ministry-form-section" style="display: none;">
+    <h2 id="form-title">Add New Ministry</h2>
+    <form id="ministry-form" class="form">
+        <input type="hidden" name="action" id="form-action" value="add">
+        <input type="hidden" name="id" id="form-id">
+        
+        <div class="form-row">
+            <label for="name">Ministry Name *</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        
+        <div class="form-row">
+            <label for="description">Description *</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+        
+        <div class="form-row">
+            <label for="leader">Leader Name *</label>
+            <input type="text" id="leader" name="leader" required>
+        </div>
+        
+        <div class="form-row">
+            <label for="contact">Contact Email *</label>
+            <input type="email" id="contact" name="contact" required>
+        </div>
+        
+        <div class="form-row">
+            <label for="schedule">Schedule *</label>
+            <input type="text" id="schedule" name="schedule" placeholder="e.g., Fridays at 7:00 PM" required>
+        </div>
+        
+        <div class="form-row">
+            <button type="submit" class="btn btn-primary" id="submit-btn">Add Ministry</button>
+            <a href="ministries.html" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</section>
+
+<div class="admin-actions-bar" id="actions-bar">
+    <a href="ministries.html?action=add" class="btn btn-primary">➕ Add New Ministry</a>
+</div>
+
+<section class="admin-section">
+    <h2>All Ministries (<span id="ministries-count">0</span>)</h2>
+    
+    <div id="no-ministries-message" style="display: none;">
+        <p>No ministries yet. <a href="ministries.html?action=add">Add your first ministry</a>.</p>
+    </div>
+    
+    <table class="admin-table" id="ministries-table" style="display: none;">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Leader</th>
+                <th>Contact</th>
+                <th>Schedule</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="ministries-tbody">
+        </tbody>
+    </table>
+</section>
+
+    </div>
+</main>
+<script src="../assets/js/main.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    // Check authentication
+    if (localStorage.getItem('admin_logged_in') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    function loadData(type) {
+        const stored = localStorage.getItem('admin_' + type);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+        const defaults = {
+            ministries: [
+                {"name": "Youth Ministry", "description": "Helping teenagers grow in faith through weekly gatherings, camps, and discipleship.", "leader": "PSTR. NEFEON BANDIEZ", "contact": "youth@cfag.church", "schedule": "Fridays at 7:00 PM", "id": "698577e1ecea8"},
+                {"name": "Women's Ministry", "description": "Bible studies, events, and mentoring for women of all ages.", "leader": "PSTRA. ELEN GONZALES", "contact": "women@cfag.church", "schedule": "Second Saturday of each month at 9:00 AM", "id": "698577e1ecebf"},
+                {"name": "Outreach & Missions", "description": "Serving our city and supporting global missions partners.", "leader": "PSTRA. ELEN GONZALES", "contact": "missions@cfag.church", "schedule": "Monthly outreaches and ongoing projects", "id": "698577e1ecec1"}
+            ]
+        };
+        return defaults[type] || [];
+    }
+
+    function saveData(type, data) {
+        localStorage.setItem('admin_' + type, JSON.stringify(data));
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    function showMessage(text, type) {
+        const msgDiv = document.getElementById('admin-message');
+        msgDiv.textContent = text;
+        msgDiv.className = 'alert ' + type;
+        msgDiv.style.display = 'block';
+        setTimeout(() => {
+            msgDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    function renderMinistries() {
+        const ministries = loadData('ministries');
+        
+        document.getElementById('ministries-count').textContent = ministries.length;
+        
+        const tbody = document.getElementById('ministries-tbody');
+        tbody.innerHTML = '';
+        
+        if (ministries.length === 0) {
+            document.getElementById('no-ministries-message').style.display = 'block';
+            document.getElementById('ministries-table').style.display = 'none';
+        } else {
+            document.getElementById('no-ministries-message').style.display = 'none';
+            document.getElementById('ministries-table').style.display = 'table';
+            
+            ministries.forEach(ministry => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(ministry.name)}</strong></td>
+                    <td>${escapeHtml(ministry.leader || '')}</td>
+                    <td>${escapeHtml(ministry.contact || '')}</td>
+                    <td>${escapeHtml(ministry.schedule || '')}</td>
+                    <td class="admin-actions-cell">
+                        <a href="ministries.html?action=edit&id=${escapeHtml(ministry.id)}" class="btn btn-outline btn-small">Edit</a>
+                        <a href="#" class="btn btn-outline btn-small btn-danger" onclick="deleteMinistry('${escapeHtml(ministry.id)}')">Delete</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    function deleteMinistry(id) {
+        if (!confirm('Are you sure you want to delete this ministry?')) {
+            return;
+        }
+        
+        const ministries = loadData('ministries');
+        const filtered = ministries.filter(m => m.id !== id);
+        saveData('ministries', filtered);
+        showMessage('Ministry deleted successfully!', 'success');
+        renderMinistries();
+    }
+
+    window.deleteMinistry = deleteMinistry;
+
+    // Handle URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    const id = urlParams.get('id');
+
+    if (action === 'add' || (action === 'edit' && id)) {
+        document.getElementById('ministry-form-section').style.display = 'block';
+        document.getElementById('actions-bar').style.display = 'none';
+        
+        if (action === 'edit' && id) {
+            const ministries = loadData('ministries');
+            const ministry = ministries.find(m => m.id === id);
+            if (ministry) {
+                document.getElementById('form-title').textContent = 'Edit Ministry';
+                document.getElementById('form-action').value = 'edit';
+                document.getElementById('form-id').value = ministry.id;
+                document.getElementById('name').value = ministry.name || '';
+                document.getElementById('description').value = ministry.description || '';
+                document.getElementById('leader').value = ministry.leader || '';
+                document.getElementById('contact').value = ministry.contact || '';
+                document.getElementById('schedule').value = ministry.schedule || '';
+                document.getElementById('submit-btn').textContent = 'Update Ministry';
+            }
+        }
+    }
+
+    // Handle form submission
+    document.getElementById('ministry-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formAction = document.getElementById('form-action').value;
+        const ministries = loadData('ministries');
+        
+        const ministryData = {
+            name: document.getElementById('name').value.trim(),
+            description: document.getElementById('description').value.trim(),
+            leader: document.getElementById('leader').value.trim(),
+            contact: document.getElementById('contact').value.trim(),
+            schedule: document.getElementById('schedule').value.trim()
+        };
+        
+        if (formAction === 'add') {
+            ministryData.id = generateId();
+            ministries.push(ministryData);
+            showMessage('Ministry added successfully!', 'success');
+        } else {
+            const editId = document.getElementById('form-id').value;
+            const index = ministries.findIndex(m => m.id === editId);
+            if (index !== -1) {
+                ministryData.id = editId;
+                ministries[index] = ministryData;
+                showMessage('Ministry updated successfully!', 'success');
+            }
+        }
+        
+        saveData('ministries', ministries);
+        renderMinistries();
+        
+        // Reset form and hide
+        document.getElementById('ministry-form').reset();
+        document.getElementById('ministry-form-section').style.display = 'none';
+        document.getElementById('actions-bar').style.display = 'block';
+        window.history.pushState({}, '', 'ministries.html');
+    });
+
+    // Initial render
+    renderMinistries();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Manage Sermons | Admin</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/admin.css">
+</head>
+<body class="admin-body">
+<header class="admin-header">
+    <div class="container">
+        <div class="admin-header-inner">
+            <div class="admin-logo">
+                <a href="index.html">CFAG Admin</a>
+            </div>
+            <nav class="admin-nav">
+                <a href="index.html">Dashboard</a>
+                <a href="events.html">Events</a>
+                <a href="sermons.html" class="active">Sermons</a>
+                <a href="ministries.html">Ministries</a>
+                <a href="gallery.html">Gallery</a>
+                <a href="../index.html" target="_blank">View Site</a>
+                <a href="logout.html">Logout</a>
+            </nav>
+        </div>
+    </div>
+</header>
+<main class="admin-main">
+    <div class="container">
+
+<h1>Manage Sermons</h1>
+
+<div id="admin-message" class="alert hidden" style="display: none;"></div>
+
+<section class="admin-form-section" id="sermon-form-section" style="display: none;">
+    <h2 id="form-title">Add New Sermon</h2>
+    <form id="sermon-form" class="form">
+        <input type="hidden" name="action" id="form-action" value="add">
+        <input type="hidden" name="id" id="form-id">
+        
+        <div class="form-row">
+            <label for="title">Sermon Title *</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        
+        <div class="form-row">
+            <label for="speaker">Speaker *</label>
+            <input type="text" id="speaker" name="speaker" required>
+        </div>
+        
+        <div class="form-row">
+            <label for="date">Date *</label>
+            <div class="date-input-wrapper">
+                <input type="date" id="date" name="date" required>
+                <span class="date-icon">📅</span>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <label for="series">Series</label>
+            <input type="text" id="series" name="series">
+        </div>
+        
+        <div class="form-row">
+            <label for="summary">Summary *</label>
+            <textarea id="summary" name="summary" rows="3" required></textarea>
+        </div>
+        
+        <div class="form-row">
+            <label for="video_url">Video URL (embed URL)</label>
+            <input type="url" id="video_url" name="video_url" placeholder="https://player.vimeo.com/video/123456789">
+            <small>Or enter a media file path below</small>
+        </div>
+        
+        <div class="form-row">
+            <label for="media_file">Media File Path</label>
+            <input type="text" id="media_file" name="media_file" placeholder="uploads/sermons/filename.mp4">
+            <small>Enter the path to the uploaded file (e.g., uploads/sermons/sermon.mp4)</small>
+            <div id="current-media" style="margin-top: 10px; display: none;">
+                <p><strong>Current file:</strong> <span id="current-file-name"></span></p>
+                <label style="display: flex; align-items: center; gap: 5px; margin-top: 5px;">
+                    <input type="checkbox" id="remove_media" name="remove_media" value="1">
+                    <span>Remove current media file</span>
+                </label>
+            </div>
+        </div>
+        
+        <div class="form-row">
+            <button type="submit" class="btn btn-primary" id="submit-btn">Add Sermon</button>
+            <a href="sermons.html" class="btn btn-outline">Cancel</a>
+        </div>
+    </form>
+</section>
+
+<div class="admin-actions-bar" id="actions-bar">
+    <a href="sermons.html?action=add" class="btn btn-primary">➕ Add New Sermon</a>
+</div>
+
+<section class="admin-section">
+    <h2>All Sermons (<span id="sermons-count">0</span>)</h2>
+    
+    <div id="no-sermons-message" style="display: none;">
+        <p>No sermons yet. <a href="sermons.html?action=add">Add your first sermon</a>.</p>
+    </div>
+    
+    <table class="admin-table" id="sermons-table" style="display: none;">
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Speaker</th>
+                <th>Date</th>
+                <th>Series</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody id="sermons-tbody">
+        </tbody>
+    </table>
+</section>
+
+    </div>
+</main>
+<script src="../assets/js/main.js"></script>
+<script src="assets/js/admin.js"></script>
+<script>
+    // Check authentication
+    if (localStorage.getItem('admin_logged_in') !== 'true') {
+        window.location.href = 'login.html';
+    }
+
+    function loadData(type) {
+        const stored = localStorage.getItem('admin_' + type);
+        if (stored) {
+            return JSON.parse(stored);
+        }
+        const defaults = {
+            sermons: [
+                {"title": "Walking by Faith", "speaker": "Pastor Kiko Gonzales", "date": "2026-01-25", "series": "Faith Foundations", "summary": "Learning to trust God in every season of life.", "video_url": "", "media_file": "uploads/sermons/698577e1ec470_1st_Sunday_formal_Service.pptx", "id": "698577e1ec470"},
+                {"title": "Hope for Tomorrow", "speaker": "Pastora Flocer Cordero", "date": "2026-01-18", "series": "Living Hope", "summary": "Finding hope in Christ in uncertain times.", "video_url": "https://player.vimeo.com/video/987654321", "id": "698577e1ec479"},
+                {"title": "The Power of Prayer", "speaker": "Pastor Nefeon Bandiez", "date": "2025-12-21", "series": "Prayer", "summary": "Discovering the power of persistent prayer.", "video_url": "https://player.vimeo.com/video/555555555", "id": "698577e1ec47a"}
+            ]
+        };
+        return defaults[type] || [];
+    }
+
+    function saveData(type, data) {
+        localStorage.setItem('admin_' + type, JSON.stringify(data));
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    function generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    function showMessage(text, type) {
+        const msgDiv = document.getElementById('admin-message');
+        msgDiv.textContent = text;
+        msgDiv.className = 'alert ' + type;
+        msgDiv.style.display = 'block';
+        setTimeout(() => {
+            msgDiv.style.display = 'none';
+        }, 5000);
+    }
+
+    function renderSermons() {
+        const sermons = loadData('sermons');
+        sermons.sort((a, b) => new Date(b.date) - new Date(a.date));
+        
+        document.getElementById('sermons-count').textContent = sermons.length;
+        
+        const tbody = document.getElementById('sermons-tbody');
+        tbody.innerHTML = '';
+        
+        if (sermons.length === 0) {
+            document.getElementById('no-sermons-message').style.display = 'block';
+            document.getElementById('sermons-table').style.display = 'none';
+        } else {
+            document.getElementById('no-sermons-message').style.display = 'none';
+            document.getElementById('sermons-table').style.display = 'table';
+            
+            sermons.forEach(sermon => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${escapeHtml(sermon.title)}</strong></td>
+                    <td>${escapeHtml(sermon.speaker || '')}</td>
+                    <td>${escapeHtml(sermon.date || '')}</td>
+                    <td>${escapeHtml(sermon.series || '')}</td>
+                    <td class="admin-actions-cell">
+                        <a href="sermons.html?action=edit&id=${escapeHtml(sermon.id)}" class="btn btn-outline btn-small">Edit</a>
+                        <a href="#" class="btn btn-outline btn-small btn-danger" onclick="deleteSermon('${escapeHtml(sermon.id)}')">Delete</a>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+    }
+
+    function deleteSermon(id) {
+        if (!confirm('Are you sure you want to delete this sermon?')) {
+            return;
+        }
+        
+        const sermons = loadData('sermons');
+        const filtered = sermons.filter(s => s.id !== id);
+        saveData('sermons', filtered);
+        showMessage('Sermon deleted successfully!', 'success');
+        renderSermons();
+    }
+
+    window.deleteSermon = deleteSermon;
+
+    // Handle URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const action = urlParams.get('action');
+    const id = urlParams.get('id');
+
+    if (action === 'add' || (action === 'edit' && id)) {
+        document.getElementById('sermon-form-section').style.display = 'block';
+        document.getElementById('actions-bar').style.display = 'none';
+        
+        if (action === 'edit' && id) {
+            const sermons = loadData('sermons');
+            const sermon = sermons.find(s => s.id === id);
+            if (sermon) {
+                document.getElementById('form-title').textContent = 'Edit Sermon';
+                document.getElementById('form-action').value = 'edit';
+                document.getElementById('form-id').value = sermon.id;
+                document.getElementById('title').value = sermon.title || '';
+                document.getElementById('speaker').value = sermon.speaker || '';
+                document.getElementById('date').value = sermon.date || '';
+                document.getElementById('series').value = sermon.series || '';
+                document.getElementById('summary').value = sermon.summary || '';
+                document.getElementById('video_url').value = sermon.video_url || '';
+                document.getElementById('media_file').value = sermon.media_file || '';
+                document.getElementById('submit-btn').textContent = 'Update Sermon';
+                
+                if (sermon.media_file) {
+                    document.getElementById('current-media').style.display = 'block';
+                    document.getElementById('current-file-name').textContent = sermon.media_file.split('/').pop();
+                }
+            }
+        }
+    }
+
+    // Handle form submission
+    document.getElementById('sermon-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formAction = document.getElementById('form-action').value;
+        const sermons = loadData('sermons');
+        
+        const sermonData = {
+            title: document.getElementById('title').value.trim(),
+            speaker: document.getElementById('speaker').value.trim(),
+            date: document.getElementById('date').value.trim(),
+            series: document.getElementById('series').value.trim(),
+            summary: document.getElementById('summary').value.trim(),
+            video_url: document.getElementById('video_url').value.trim(),
+            media_file: ''
+        };
+        
+        // Handle media file
+        const removeMedia = document.getElementById('remove_media').checked;
+        if (removeMedia) {
+            sermonData.media_file = '';
+        } else {
+            const mediaFile = document.getElementById('media_file').value.trim();
+            if (mediaFile) {
+                sermonData.media_file = mediaFile;
+            } else if (formAction === 'edit') {
+                // Keep existing media file if editing and not removing
+                const editId = document.getElementById('form-id').value;
+                const existingSermon = sermons.find(s => s.id === editId);
+                if (existingSermon) {
+                    sermonData.media_file = existingSermon.media_file || '';
+                }
+            }
+        }
+        
+        if (formAction === 'add') {
+            sermonData.id = generateId();
+            sermons.push(sermonData);
+            showMessage('Sermon added successfully!', 'success');
+        } else {
+            const editId = document.getElementById('form-id').value;
+            const index = sermons.findIndex(s => s.id === editId);
+            if (index !== -1) {
+                sermonData.id = editId;
+                sermons[index] = sermonData;
+                showMessage('Sermon updated successfully!', 'success');
+            }
+        }
+        
+        saveData('sermons', sermons);
+        renderSermons();
+        
+        // Reset form and hide
+        document.getElementById('sermon-form').reset();
+        document.getElementById('current-media').style.display = 'none';
+        document.getElementById('sermon-form-section').style.display = 'none';
+        document.getElementById('actions-bar').style.display = 'block';
+        window.history.pushState({}, '', 'sermons.html');
+    });
+
+    // Initial render
+    renderSermons();
+</script>
+</body>
+</html>
+

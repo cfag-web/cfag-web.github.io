@@ -1,0 +1,98 @@
+<?php
+$pageTitle   = 'Services & Schedule | CFAG Church';
+$currentPage = 'services';
+
+require __DIR__ . '/includes/header.php';
+?>
+
+<section class="page-header">
+    <div class="container">
+        <h1>Services & Schedule</h1>
+        <p>Find a time and place to worship with us this week.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container two-column">
+        <div>
+            <h2>Weekly Services</h2>
+            <ul class="card-list">
+                <li class="card">
+                    <h3>Sunday Worship Gathering</h3>
+                    <p class="meta">Sundays &middot; 10:00 AM &middot; Main Sanctuary</p>
+                    <p>
+                        A vibrant, modern worship service with Christ-centered preaching,
+                        kids ministry, and time to connect.
+                    </p>
+                </li>
+                <li class="card">
+                    <h3>Midweek Prayer & Worship</h3>
+                    <p class="meta">Thursdays &middot; 7:00 PM &middot; Prayer Room</p>
+                    <p>
+                        An unhurried time of worship, prayer, and ministry as we seek God together.
+                    </p>
+                </li>
+                <li class="card">
+                    <h3>Youth Service</h3>
+                    <p class="meta">Fridays &middot; 7:00 PM &middot; Youth Hall</p>
+                    <p>
+                        Students gather for worship, teaching, small groups, and community.
+                    </p>
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h2>What to Expect</h2>
+            <p>
+                Our services typically last about 75–90 minutes and include worship through music,
+                biblical teaching, and response. Come as you are—there is no dress code.
+            </p>
+            <p>
+                Kids ministry is available during our Sunday morning service. Our team will help
+                you check in your children and find their classrooms.
+            </p>
+        </div>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="container two-column">
+        <div>
+            <h2>Location & Directions</h2>
+            <p>Zone 3, 35 Tuna St, Maypajo, Caloocan, 1400 Metro Manila</p>
+            <p>
+                We’re located just off the main highway. Look for the CFAG sign and our welcome
+                team will help you find parking.
+            </p>
+            <a href="https://maps.google.com" target="_blank" rel="noopener" class="btn btn-outline">
+                Open in Google Maps
+            </a>
+        </div>
+        <div class="map-embed">
+            <!-- Replace the src with your actual Google Maps embed link -->
+            <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3860.288300015893!2d120.96598171170106!3d14.63956917606038!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3397b5c6c2398eb5%3A0x241e49763610078c!2sCommunity%20Of%20Faith%20Assembly%20Of%20God!5e0!3m2!1sen!2sph!4v1770688958809!5m2!1sen!2sph"
+                width="100%" height="280" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false"
+                tabindex="0"></iframe>
+        </div>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <h2>Live Stream</h2>
+        <p>
+            Our Sunday worship service is streamed live at <strong>10:00 AM</strong> on our
+            YouTube and Facebook channels.
+        </p>
+        <p>
+            If you’re joining us online, we’d still love to know you’re with us!
+            Take a moment to fill out the Connect form so we can say hello.
+        </p>
+        <a href="connect.php" class="btn btn-primary">Connect with Us</a>
+    </div>
+</section>
+
+<?php require __DIR__ . '/includes/footer.php'; ?>
+
+

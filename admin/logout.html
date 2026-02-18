@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Logout | Admin</title>
+</head>
+<body>
+    <script>
+        // Clear admin session
+        localStorage.removeItem('admin_logged_in');
+        localStorage.removeItem('admin_username');
+        window.location.href = 'login.html';
+    </script>
+</body>
+</html>
+

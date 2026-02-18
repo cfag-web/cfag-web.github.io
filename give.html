@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Give | CFAG Church</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="index.html">CFAG Church</a>
+            <span class="tagline">COMMUNITY OF FAITH ASSEMBLIES OF GOD</span>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="sermons.html">Sermons</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="ministries.html">Ministries</a></li>
+                <li><a href="connect.html">Connect</a></li>
+                <li class="active"><a href="give.html">Give</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="site-main">
+
+<section class="page-header">
+    <div class="container">
+        <h1>Give</h1>
+        <p>Your generosity fuels the mission of CFAG Church.</p>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container two-column">
+        <div>
+            <h2>Why We Give</h2>
+            <p>
+                Giving is an act of worship and trust. When we give, we recognize that everything
+                we have comes from God and is for His purposes.
+            </p>
+            <p>
+                Your generosity helps support local ministry, outreach to our city, and missions
+                around the world.
+            </p>
+        </div>
+        <div>
+            <h2>Ways to Give</h2>
+            <ul class="bulleted">
+                <li><strong>In Person</strong> &mdash; Give during any of our worship services.</li>
+                <li><strong>Online</strong> &mdash; Use the secure giving option below.</li>
+                <li><strong>Mail</strong> &mdash; Send gifts to our church office.</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="section alt">
+    <div class="container">
+        <h2>Online Giving</h2>
+        <p class="small">
+            This is a demo layout. In a real site, you would integrate with a payment provider
+            such as Stripe, PayPal, Tithe.ly, or your church management system.
+        </p>
+
+        <form class="form give-form">
+            <div class="form-row">
+                <label for="give-amount">Amount</label>
+                <div class="amount-input">
+                    <span class="currency">₱</span>
+                    <input type="number" id="give-amount" min="1" step="1" value="50">
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Frequency</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="frequency" value="once" checked> One-time</label>
+                    <label><input type="radio" name="frequency" value="weekly"> Weekly</label>
+                    <label><input type="radio" name="frequency" value="monthly"> Monthly</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <button type="button" class="btn btn-primary" id="btn-give-demo">
+                    Continue to Secure Giving
+                </button>
+            </div>
+            <p class="small">
+                Clicking this button in the demo will simply show a message. Replace this
+                section with your payment provider's embed or redirect.
+            </p>
+        </form>
+
+        <div id="give-demo-message" class="alert info hidden">
+            This is a demo only. Connect this button to your real online giving platform.
+        </div>
+    </div>
+</section>
+
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>&copy; <span id="current-year">2024</span> CFAG Church. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="connect.html">Contact</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>
+    // Update year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+

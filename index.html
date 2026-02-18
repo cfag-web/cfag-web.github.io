@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Home | CFAG Church</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<header class="site-header">
+    <div class="container header-inner">
+        <div class="logo">
+            <a href="index.html">CFAG Church</a>
+            <span class="tagline">COMMUNITY OF FAITH ASSEMBLIES OF GOD</span>
+        </div>
+        <nav class="main-nav">
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+            <ul>
+                <li class="active"><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="sermons.html">Sermons</a></li>
+                <li><a href="events.html">Events</a></li>
+                <li><a href="ministries.html">Ministries</a></li>
+                <li><a href="connect.html">Connect</a></li>
+                <li><a href="give.html">Give</a></li>
+                <li><a href="gallery.html">Gallery</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="site-main">
+
+<section class="hero">
+    <div class="container hero-inner">
+        <div class="hero-text">
+            <h1>Welcome to CFAG Church</h1>
+            <p class="hero-subtitle">A community centered on Jesus, reaching every generation.</p>
+            <p class="hero-service-times">
+                Sunday Service &middot; 10:00 AM<br>
+                Midweek Gathering &middot; Wednesdays 7:00 PM
+            </p>
+            <a href="connect.html#plan-visit" class="btn btn-primary">Plan a Visit</a>
+        </div>
+        <div class="hero-card">
+            <h2>This Sunday</h2>
+            <p>Join us for worship, teaching, and community.</p>
+            <ul class="hero-highlights">
+                <li>Uplifting worship</li>
+                <li>Biblical teaching</li>
+                <li>Fun kids ministry</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<section class="section mission">
+    <div class="container">
+        <h2>Our Mission</h2>
+        <p>
+            We exist to glorify God by making disciples of Jesus who love God, love people,
+            and bring hope to our city and the nations.
+        </p>
+    </div>
+</section>
+
+<section class="section split-grid">
+    <div class="container split-grid-inner">
+        <div>
+            <h2>Upcoming Events</h2>
+            <ul class="card-list" id="events-list">
+                <!-- Events will be populated by JavaScript -->
+            </ul>
+            <a href="events.html" class="link-arrow">View all events</a>
+        </div>
+        <div>
+            <h2>Latest Sermons</h2>
+            <ul class="card-list" id="sermons-list">
+                <!-- Sermons will be populated by JavaScript -->
+            </ul>
+            <a href="sermons.html" class="link-arrow">Browse all sermons</a>
+        </div>
+    </div>
+</section>
+
+</main>
+<footer class="site-footer">
+    <div class="container footer-inner">
+        <p>&copy; <span id="current-year">2024</span> CFAG Church. All rights reserved.</p>
+        <div class="footer-links">
+            <a href="connect.html">Contact</a>
+            <a href="https://facebook.com" target="_blank" rel="noopener">Facebook</a>
+            <a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a>
+        </div>
+    </div>
+</footer>
+<script src="assets/js/main.js"></script>
+<script>
+    // Embedded data
+    const events = [
+        {
+            "title": "Sunday Worship Service",
+            "date": "2026-02-08",
+            "time": "10:00 AM",
+            "location": "Main Sanctuary",
+            "description": "Join us for worship, teaching, and fellowship.",
+            "id": "698577e1ea94d"
+        },
+        {
+            "title": "Midweek Prayer Meeting",
+            "date": "2026-02-05",
+            "time": "7:00 PM",
+            "location": "Prayer Room",
+            "description": "A weekly time of corporate prayer and encouragement.",
+            "id": "698577e1eacda"
+        },
+        {
+            "title": "Youth Night",
+            "date": "2026-02-15",
+            "time": "6:30 PM",
+            "location": "Youth Hall",
+            "description": "Games, worship, and a timely message for students.",
+            "id": "698577e1eaceb"
+        }
+    ];
+
+    const sermons = [
+        {
+            "title": "Walking by Faith",
+            "speaker": "Pastor Kiko Gonzales",
+            "date": "2026-01-25",
+            "series": "Faith Foundations",
+            "summary": "Learning to trust God in every season of life.",
+            "video_url": "",
+            "media_file": "uploads/sermons/698577e1ec470_1st_Sunday_formal_Service.pptx",
+            "id": "698577e1ec470"
+        },
+        {
+            "title": "Hope for Tomorrow",
+            "speaker": "Pastora Flocer Cordero",
+            "date": "2026-01-18",
+            "series": "Living Hope",
+            "summary": "Finding hope in Christ in uncertain times.",
+            "video_url": "https://player.vimeo.com/video/987654321",
+            "id": "698577e1ec479"
+        },
+        {
+            "title": "The Power of Prayer",
+            "speaker": "Pastor Nefeon Bandiez",
+            "date": "2025-12-21",
+            "series": "Prayer",
+            "summary": "Discovering the power of persistent prayer.",
+            "video_url": "https://player.vimeo.com/video/555555555",
+            "id": "698577e1ec47a"
+        }
+    ];
+
+    // Get latest sermons and upcoming events
+    const latestSermons = sermons.slice(0, 2);
+    const upcomingEvents = events.slice(0, 3);
+
+    // Render events
+    const eventsList = document.getElementById('events-list');
+    if (eventsList) {
+        if (upcomingEvents.length > 0) {
+            upcomingEvents.forEach(event => {
+                const li = document.createElement('li');
+                li.className = 'card';
+                li.innerHTML = `
+                    <h3>${escapeHtml(event.title)}</h3>
+                    <p class="meta">
+                        ${escapeHtml(event.date)} &middot;
+                        ${escapeHtml(event.time)}
+                    </p>
+                    <p class="meta">
+                        ${escapeHtml(event.location)}
+                    </p>
+                    <p>${escapeHtml(event.description)}</p>
+                `;
+                eventsList.appendChild(li);
+            });
+        } else {
+            eventsList.innerHTML = '<li><p>No upcoming events listed right now. Check back soon!</p></li>';
+        }
+    }
+
+    // Render sermons
+    const sermonsList = document.getElementById('sermons-list');
+    if (sermonsList) {
+        if (latestSermons.length > 0) {
+            latestSermons.forEach(sermon => {
+                const li = document.createElement('li');
+                li.className = 'card';
+                li.innerHTML = `
+                    <h3>${escapeHtml(sermon.title)}</h3>
+                    <p class="meta">
+                        ${escapeHtml(sermon.date)} &middot;
+                        ${escapeHtml(sermon.speaker)}
+                    </p>
+                    <p>${escapeHtml(sermon.summary)}</p>
+                `;
+                sermonsList.appendChild(li);
+            });
+        } else {
+            sermonsList.innerHTML = '<li><p>Sermons will be posted here soon.</p></li>';
+        }
+    }
+
+    function escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Update year dynamically
+    document.getElementById('current-year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
+

@@ -1,0 +1,30 @@
+[
+    {
+        "title": "Walking by Faith",
+        "speaker": "Pastor Kiko Gonzales",
+        "date": "2026-01-25",
+        "series": "Faith Foundations",
+        "summary": "Learning to trust God in every season of life.",
+        "video_url": "",
+        "media_file": "uploads\/sermons\/698577e1ec470_1st_Sunday_formal_Service.pptx",
+        "id": "698577e1ec470"
+    },
+    {
+        "title": "Hope for Tomorrow",
+        "speaker": "Pastora Flocer Cordero",
+        "date": "2026-01-18",
+        "series": "Living Hope",
+        "summary": "Finding hope in Christ in uncertain times.",
+        "video_url": "https:\/\/player.vimeo.com\/video\/987654321",
+        "id": "698577e1ec479"
+    },
+    {
+        "title": "The Power of Prayer",
+        "speaker": "Pastor Nefeon Bandiez",
+        "date": "2025-12-21",
+        "series": "Prayer",
+        "summary": "Discovering the power of persistent prayer.",
+        "video_url": "https:\/\/player.vimeo.com\/video\/555555555",
+        "id": "698577e1ec47a"
+    }
+]
